@@ -1,6 +1,7 @@
 {
-	"name": "pipeline1",
+	"name": "notebookactivity",
 	"properties": {
+		"description": "using a notebook databricks in azure data factory",
 		"activities": [
 			{
 				"name": "Notebook1",
