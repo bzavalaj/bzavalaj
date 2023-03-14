@@ -1,0 +1,11 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"parameters": {
+			"name": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
