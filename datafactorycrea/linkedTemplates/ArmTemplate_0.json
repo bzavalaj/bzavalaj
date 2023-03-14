@@ -7,13 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "datafactorycrea"
 		},
-		"AzureDatabricksLinkedService_accessToken": {
+		"AzureDatabricks1_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksLinkedService'"
-		},
-		"AzureDatabricksprueba_accessToken": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksprueba'"
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
 		}
 	},
 	"variables": {
@@ -21,29 +17,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureDatabricksLinkedService')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureDatabricks",
-				"typeProperties": {
-					"domain": "https://adb-3400067321270937.17.azuredatabricks.net",
-					"accessToken": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDatabricksLinkedService_accessToken')]"
-					},
-					"newClusterNodeType": "Standard_DS3_v2",
-					"newClusterNumOfWorker": "2:12",
-					"newClusterVersion": "10.4.x-scala2.12",
-					"newClusterInitScripts": [],
-					"clusterOption": "Autoscaling"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureDatabricksprueba')]",
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -53,28 +27,28 @@
 					"domain": "https://adb-4834946087770133.13.azuredatabricks.net",
 					"accessToken": {
 						"type": "SecureString",
-						"value": "[parameters('AzureDatabricksprueba_accessToken')]"
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					},
 					"newClusterNodeType": "Standard_DS3_v2",
-					"newClusterNumOfWorker": "2:12",
+					"newClusterNumOfWorker": "2",
 					"newClusterSparkEnvVars": {
 						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
 					},
 					"newClusterVersion": "10.4.x-scala2.12",
 					"newClusterInitScripts": [],
-					"clusterOption": "Autoscaling"
+					"clusterOption": "Fixed"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
+			"name": "[concat(parameters('factoryName'), '/pipeline_parametros_notebook')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "prueba_databricks",
+						"name": "Notebook_parametros",
 						"type": "DatabricksNotebook",
 						"dependsOn": [],
 						"policy": {
@@ -86,13 +60,13 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/adftutorial/ournotebook",
+							"notebookPath": "/otra/pruebaparametros",
 							"baseParameters": {
-								"name": "@pipeline().parameters.name"
+								"input": "@pipeline().parameters.names"
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "AzureDatabricksprueba",
+							"referenceName": "AzureDatabricks1",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -102,14 +76,14 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"name": {
+					"names": {
 						"type": "string"
 					}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricksprueba')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks1')]"
 			]
 		}
 	]

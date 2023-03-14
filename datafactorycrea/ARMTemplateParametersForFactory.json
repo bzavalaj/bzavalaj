@@ -5,10 +5,7 @@
 		"factoryName": {
 			"value": "datafactorycrea"
 		},
-		"AzureDatabricksLinkedService_accessToken": {
-			"value": ""
-		},
-		"AzureDatabricksprueba_accessToken": {
+		"AzureDatabricks1_accessToken": {
 			"value": ""
 		}
 	}

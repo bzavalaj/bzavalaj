@@ -7,13 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "datafactorycrea"
 		},
-		"AzureDatabricksLinkedService_accessToken": {
+		"AzureDatabricks1_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksLinkedService'"
-		},
-		"AzureDatabricksprueba_accessToken": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksprueba'"
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
 		},
 		"containerUri": {
 			"type": "string",
@@ -42,11 +38,8 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureDatabricksLinkedService_accessToken": {
-						"value": "[parameters('AzureDatabricksLinkedService_accessToken')]"
-					},
-					"AzureDatabricksprueba_accessToken": {
-						"value": "[parameters('AzureDatabricksprueba_accessToken')]"
+					"AzureDatabricks1_accessToken": {
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
 					}
 				}
 			},
