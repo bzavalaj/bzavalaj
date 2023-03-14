@@ -15,7 +15,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/adftutorial/ournotebook"
+					"notebookPath": "/adftutorial/ournotebook",
+					"baseParameters": {
+						"name": "@pipeline().parameters.name"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureDatabricksprueba",
