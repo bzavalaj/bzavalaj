@@ -10,6 +10,10 @@
 		"AzureDatabricksLinkedService_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksLinkedService'"
+		},
+		"AzureDatabricksprueba_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksprueba'"
 		}
 	},
 	"variables": {
@@ -30,23 +34,47 @@
 						"value": "[parameters('AzureDatabricksLinkedService_accessToken')]"
 					},
 					"newClusterNodeType": "Standard_DS3_v2",
-					"newClusterNumOfWorker": "1",
+					"newClusterNumOfWorker": "2:12",
 					"newClusterVersion": "10.4.x-scala2.12",
 					"newClusterInitScripts": [],
-					"clusterOption": "Fixed"
+					"clusterOption": "Autoscaling"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/notebookactivity')]",
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricksprueba')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-4834946087770133.13.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDatabricksprueba_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_DS3_v2",
+					"newClusterNumOfWorker": "2:12",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "10.4.x-scala2.12",
+					"newClusterInitScripts": [],
+					"clusterOption": "Autoscaling"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "using a notebook databricks in azure data factory",
 				"activities": [
 					{
-						"name": "Notebook1",
+						"name": "prueba_databricks",
 						"type": "DatabricksNotebook",
 						"dependsOn": [],
 						"policy": {
@@ -58,16 +86,13 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/adftutorial/mynotebook",
+							"notebookPath": "/adftutorial/ournotebook",
 							"baseParameters": {
-								"input": {
-									"value": "@pipeline().parameters.name",
-									"type": "Expression"
-								}
+								"name": "@pipeline().parameters.name"
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "AzureDatabricksLinkedService",
+							"referenceName": "AzureDatabricksprueba",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -84,7 +109,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricksLinkedService')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricksprueba')]"
 			]
 		}
 	]
